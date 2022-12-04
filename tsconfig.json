@@ -1,0 +1,14 @@
+{
+  "ts-node": {
+    "swc": true,
+    "transpileOnly": true
+  },
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "NodeNext",
+    "paths": {
+      "frame": ["./frame"]
+    }
+  }
+}

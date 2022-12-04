@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "@swc/core": "^1.3.21",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.10",
+    "add": "^2.0.6",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.0",
+    "stacktrace-js": "^2.0.2",
+    "ts-node": "^10.9.1"
+  },
+  "scripts": {
+    "test": "node --test -r ts-node/register path-tools.test.ts"
+  }
+}
