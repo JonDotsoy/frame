@@ -6,6 +6,7 @@ import { inspect, InspectOptions } from "node:util"
 import * as path from "node:path"
 import { cwd } from "node:process"
 import { mkdir, writeFile } from "node:fs/promises"
+import { LiteJsSys } from "./LiteJsSys"
 
 const consoleInspect = (arg: any, options?: InspectOptions) => console.log(inspect(arg, { depth: Infinity, ...options }))
 
@@ -73,99 +74,26 @@ const createMinimalProgramSpecifier = async (fileLocation: string): Promise<Prog
     }
 }
 
-namespace LiteJsSys {
-    export abstract class JsSys {
-        abstract toSource(): string
-    }
-    export class Comment extends JsSys {
-        constructor(readonly message: string) { super() }
-        toSource(): string {
-            return `// ${this.message}\n`
-        }
-    }
-    export class NewLine extends JsSys {
-        toSource(): string {
-            return '\n'
-        }
-    }
-    export class Import extends JsSys {
-        constructor(readonly sourceLocation: string, readonly name: string) { super() }
-        toSource() {
-            return `import * as ${this.name} from ${inspect(this.sourceLocation)}\n`
-        }
-    }
-    export class MapExpression extends JsSys {
-        constructor(readonly k: string = 'any', readonly v: string = 'any') { super() }
-        toSource() {
-            return `new Map<${this.k}, ${this.v}>()`
-        }
-    }
-    export class ConstExpression extends JsSys {
-        constructor(readonly name: string, readonly expression: JsSys) { super() }
-        toSource() {
-            return `const ${this.name} = ${this.expression.toSource()}`
-        }
-    }
-    export class Export extends JsSys {
-        constructor(readonly expression: JsSys) { super() }
-        toSource() {
-            return `export ${this.expression.toSource()};\n`
-        }
-    }
-    export class Program extends JsSys {
-        _body: JsSys[] = []
-        imports = new Map<string, Import>()
-        constructor(readonly filename: string) { super() }
-        appendImport(importExpression: Import) {
-            this.imports.set(importExpression.name, importExpression)
-        }
-        append(expression: JsSys) {
-            this._body.push(expression)
-        }
-        get body() {
-            return [
-                ...Array.from(this.imports.values()),
-                new NewLine(),
-                new NewLine(),
-                ...this._body,
-            ]
-        }
-        toSource() {
-            const sourceLines: string[] = [];
-
-            for (const line of this.body) {
-                sourceLines.push(line.toSource())
-            }
-
-            return sourceLines.join('')
-        }
-    }
-}
-
 const collectIndexedToProgram = async (collectIndexed: CollectIndexed, options: { cwd: string }) => {
     const dirOut = new URL(`${options.cwd}/.frame/`, 'file://');
     const filProgramOut = new URL('app.ts', dirOut)
     const program = new LiteJsSys.Program(filProgramOut.pathname);
 
-    const loadedDefExports: [name: string][] = []
-
-    for (const [programLocation, programDef] of collectIndexed.loaded.entries()) {
-        const { keywordName, relative } = newFunction(filProgramOut.pathname, programLocation)
-        program.appendImport(new LiteJsSys.Import(relative, keywordName))
-    }
-
-    program.append(new LiteJsSys.Export(new LiteJsSys.ConstExpression("m", new LiteJsSys.MapExpression())))
-
+    program.append(new LiteJsSys.Export(new LiteJsSys.ConstExpression("m", new LiteJsSys.SetExpression())))
     program.append(new LiteJsSys.NewLine())
 
-    collectIndexed.loaded.forEach(loadedDef => {
-        loadedDef.exports.forEach(exportDef => {
-            program.append(
-                new LiteJsSys.Comment(exportDef[0])
-            )
-            // program.appendImport(importDef.sourceLocation, importDef.specifiers)
-        })
-    })
+    for (const [programLocation, programDef] of collectIndexed.loaded) {
+        const { keywordName, relative } = newFunction(filProgramOut.pathname, programLocation)
+        program.appendImport(new LiteJsSys.Import(relative, keywordName))
+        for (const { sourceLocation, specifiers } of programDef.imports) {
+            const { keywordName, relative } = newFunction(filProgramOut.pathname, sourceLocation)
+            program.appendImport(new LiteJsSys.Import(relative, keywordName))
+        }
+
+        for (const [f] of programDef.exports) {
+            program.append(new LiteJsSys.Literal(`m.add(${keywordName}.${f})`))
+        }
+    }
 
     return program
 }
