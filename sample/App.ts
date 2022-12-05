@@ -1,10 +1,10 @@
-import { DBClient } from "./DBClient";
+import DBClient from "./DBClient";
 import { ExpressServer } from "./ExpressServer";
 
 
 export class App {
     constructor(
-        private dbClient: DBClient,
+        dbClient: DBClient,
         private express: ExpressServer
     ) { }
 

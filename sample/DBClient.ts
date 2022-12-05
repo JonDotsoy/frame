@@ -1,1 +1,1 @@
-export class DBClient { }
+export default class DBClient { }

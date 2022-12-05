@@ -1,5 +1,5 @@
-import { objectFilterTree as $$$, objectDeepAt as $ } from "./path-tools"
-import { ExportDeclaration, ExportDefaultExpression, ImportDeclaration, ImportSpecifier, parseFile, Program, Span } from "@swc/core"
+import { objectFilterTree as $$$, objectFindDeepAt as $$, objectDeepAt as $ } from "./path-tools"
+import { Constructor, ExportDeclaration, ExportDefaultExpression, ImportDeclaration, ImportSpecifier, parseFile, Program, Span } from "@swc/core"
 import * as  a from "stacktrace-js"
 import { createRequire } from "node:module"
 import { inspect, InspectOptions } from "node:util"
@@ -11,6 +11,9 @@ import { LiteJsSys } from "./LiteJsSys"
 const consoleInspect = (arg: any, options?: InspectOptions) => console.log(inspect(arg, { depth: Infinity, ...options }))
 
 type SpecifierDef = [name: string, localName?: string]
+type ExportSpecifierDef = [name: string, localName: string | undefined, opts: {
+    arguments: ImportDef[],
+}]
 
 interface ImportDef {
     sourceLocation: string
@@ -19,7 +22,7 @@ interface ImportDef {
 
 interface ProgramDef {
     imports: Set<ImportDef>
-    exports: Set<SpecifierDef>
+    exports: Set<ExportSpecifierDef>
 }
 
 interface CollectIndexed {
@@ -31,6 +34,9 @@ const createMinimalProgramSpecifier = async (fileLocation: string): Promise<Prog
     const module = await parseFile(fileLocation, { syntax: 'typescript', target: 'es2022' })
 
     const importSpecifiersToSpecifierDef = (sourceLocation: string) => (importSpecifier: ImportSpecifier): SpecifierDef => {
+        if (importSpecifier.type === 'ImportDefaultSpecifier') {
+            return ['default', importSpecifier.local.value]
+        }
         if (importSpecifier.type === 'ImportSpecifier' && importSpecifier.imported) {
             return [importSpecifier.imported.value, importSpecifier.local.value]
         }
@@ -47,22 +53,33 @@ const createMinimalProgramSpecifier = async (fileLocation: string): Promise<Prog
 
     const importDeclarations = new Set($$$<ImportDeclaration>(module.body, (_, obj) => $(obj, 'type') === 'ImportDeclaration').map(importDeclarationToImportDef))
 
-    const exports = new Set<SpecifierDef>()
+    const exports = new Set<ExportSpecifierDef>()
 
     for (const exportDefaultExpression of $$$<ExportDefaultExpression>(module.body, (_, o) => $(o, 'type') === 'ExportDefaultExpression')) {
-        exports.add(['default'])
+        exports.add(['default', undefined, { arguments: [] }])
     }
 
     for (const exportDeclaration of $$$<ExportDeclaration>(module.body, (_, o) => $(o, 'type') === 'ExportDeclaration')) {
         const declaration = exportDeclaration.declaration;
         if (declaration.type === 'ClassDeclaration' || declaration.type === 'FunctionDeclaration') {
-            exports.add([declaration.identifier.value])
+
+            // consoleInspect(declaration)
+            const [constructorDef] = $$(declaration, 'body', (_, o) => $(o, 'type') === 'Constructor') as [undefined | Constructor]
+            if (constructorDef) {
+                for (const param of constructorDef.params) {
+                    consoleInspect({ importDeclarations, param })
+                }
+            }
+
+            exports.add([declaration.identifier.value, undefined, {
+                arguments: []
+            }])
         }
         if (declaration.type === 'VariableDeclaration') {
             for (const variableDeclaration of declaration.declarations) {
                 const id = variableDeclaration.id
                 if (id.type === 'Identifier') {
-                    exports.add([id.value])
+                    exports.add([id.value, undefined, { arguments: [] }])
                 }
             }
         }
@@ -135,7 +152,9 @@ export const compose = async <T>(ctrl: T) => {
     await mkdir(path.dirname(program.filename), { recursive: true })
     await writeFile(program.filename, program.toSource())
 
-    consoleInspect(require(program.filename))
+    const newLocal = require(program.filename)
+
+    consoleInspect(newLocal.m)
 }
 
 function newFunction(filProgramOut: string, programLocation: string) {
