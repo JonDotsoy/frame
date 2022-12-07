@@ -12,5 +12,6 @@
   },
   "scripts": {
     "test": "node --test -r ts-node/register path-tools.test.ts"
-  }
+  },
+  "name": "tomy"
 }
