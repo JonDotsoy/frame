@@ -5,8 +5,8 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "test": "node --test -r ts-node/register path-tools.test.ts",
-    "prepare": "tsc"
+    "test": "node --test -r ts-node/register src/**.test.ts",
+    "prepare": "tsc && husky install"
   },
   "name": "tomy",
   "version": "0.1.0",
@@ -15,8 +15,8 @@
   "bin": "dist/cli.js",
   "devDependencies": {
     "@types/node": "^18.11.11",
+    "husky": "^8.0.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.1"
-  },
-  "prepare": "tsc"
+  }
 }

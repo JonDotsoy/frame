@@ -8,3 +8,6 @@ node_modules/
 !.npmignore
 !.swcrc
 dist/
+!.vscode
+!.husky
+.tomy
