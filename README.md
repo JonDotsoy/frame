@@ -2,9 +2,9 @@
 
 TOMY is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.
 
-## Usage
+TOMY works only with classes that read their arguments and with them create an object based on this primary class.
 
-TOMY works only with classes, then read their arguments to create an object based on this class.
+## Usage
 
 For example, the next App class is used to bootstrap the app.
 
@@ -35,7 +35,7 @@ export class CatService {}
 import { CatService } from "./cat.service"
 
 export class APP {
-    constructor(readonly catService: CatService) {}
+  constructor(readonly catService: CatService) {}
 }
 ```
 
@@ -45,12 +45,7 @@ Result is
 App { catService: CatService {} }
 ```
 
-
 ## Features
 
 - Support to read TS Modules
 - (Coming soon) Support to read JS Modules
-
-
-
-
