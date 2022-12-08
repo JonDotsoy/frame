@@ -1,0 +1,13 @@
+.nvmrc
+.editorconfig
+.prettierrc.json
+.scripts/*
+.tomy/*
+.vscode/*
+*/samples/*
+*.test.ts
+*.tgz
+tsconfig.json
+.swcrc
+src/
+!dist/

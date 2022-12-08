@@ -20,7 +20,7 @@ export const factory = async <T>(C: new (...args: any) => T): Promise<T> => {
     const fileDirname = dirname(fileClassLocation.pathname)
     const fileBasename = basename(fileClassLocation.pathname, callByFilenameExt)
 
-    return require(`${fileDirname}/${fileBasename}`).ctx.get(C)
+    return require(`${fileDirname}/${fileBasename}.deeps`).ctx.get(C)
   }
 
   const keyword = relative(cwd(), fileClassLocation.pathname).replace(

@@ -1,5 +1,8 @@
+#!/usr/bin/env node
+
 import { factory } from "./factory"
 import { Cli } from "./apps/cli/Cli"
+
 
 factory(Cli)
   .then((cli) => cli.run())

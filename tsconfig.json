@@ -5,10 +5,15 @@
   },
   "compilerOptions": {
     "strict": true,
-    "target": "ESNext",
-    "module": "NodeNext",
+    
+    "declaration": true,
+    "inlineSourceMap": true,
+    "target": "ES2022",
+    "module": "CommonJS",
     "paths": {
       "frame": ["./frame"]
-    }
+    },
+    "rootDir": "src",
+    "outDir": "dist"
   }
 }

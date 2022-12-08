@@ -4,3 +4,7 @@ node_modules/
 !.editorconfig
 !.prettierrc.json
 !.nvmrc
+*.tgz
+!.npmignore
+!.swcrc
+dist/

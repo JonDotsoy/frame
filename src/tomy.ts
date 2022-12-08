@@ -21,7 +21,7 @@ const generatorInstance = <T>(
   return instance
 }
 
-class Context {
+export class Context {
   constructor(
     private deeps: Map<any, any[]> = new Map(),
     private instancesMap: Map<any, any> = new Map()
