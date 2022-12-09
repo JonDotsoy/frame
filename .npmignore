@@ -1,9 +1,9 @@
 .nvmrc
 .editorconfig
 .prettierrc.json
-.scripts/*
-.tomy/*
-.vscode/*
+.scripts/
+.tom/
+.vscode/
 */samples/*
 *.test.ts
 *.tgz

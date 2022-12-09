@@ -17,7 +17,7 @@ export class RunCmd implements CmdHandler {
       new URL(`${cwd()}/`, "file:///")
     )
     const fileOutLocationDirectory = new URL(
-      ".tomy/",
+      ".tom/",
       new URL(`${cwd()}/`, "file:///")
     )
     const fileOutLocation = new URL(".deeps.ts", fileOutLocationDirectory)
