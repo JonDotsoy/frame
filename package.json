@@ -11,9 +11,9 @@
     "test:watch": "vitest watch --ui src/**.test.ts",
     "prepare": "tsc && husky install"
   },
-  "name": "tomyts",
+  "name": "tomts",
   "version": "0.1.0",
-  "description": "TOMY is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.",
+  "description": "TOM is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.",
   "main": "dist/tomy.js",
   "devDependencies": {
     "@types/node": "^18.11.11",
@@ -26,7 +26,7 @@
     "vitest": "^0.25.6"
   },
   "bin": {
-    "tomy": "./dist/cli.js"
+    "tom": "./dist/cli.js"
   },
   "publishConfig": {
     "access": "public"
