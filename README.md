@@ -1,5 +1,7 @@
 # TOMY Framework
 
+> **🚧 PROJECT ON DRAFT**
+
 TOMY is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.
 
 TOMY works only with classes that read their arguments and with them create an object based on this primary class.
