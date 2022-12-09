@@ -11,7 +11,7 @@
     "test:watch": "vitest watch --ui src/**.test.ts",
     "prepare": "tsc && husky install"
   },
-  "name": "@jondotsoy/tomy",
+  "name": "tomyts",
   "version": "0.1.0",
   "description": "TOMY is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.",
   "main": "dist/tomy.js",
