@@ -1,7 +1,7 @@
 // import { log } from "node:console";
 // import { describe, it } from "node:test";
 
-import { test } from "vitest";
+import { test } from "vitest"
 
 // describe("describe 1", () => {
 //   it("it 1", () => { })

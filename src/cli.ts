@@ -6,7 +6,7 @@ import { error } from "console"
 
 factory(Cli)
   .then((cli) => cli.run())
-  .catch(err => {
+  .catch((err) => {
     error(err)
     process.exitCode = 1
   })

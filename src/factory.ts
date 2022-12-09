@@ -28,7 +28,13 @@ export const factory = async <T>(C: new (...args: any) => T): Promise<T> => {
     return require(deepAltShort).ctx.get(C)
   }
 
-  debug({ deepAlt, deepAltDirname, deepAltExt, deepAltBasename, fileClassLocation })
+  debug({
+    deepAlt,
+    deepAltDirname,
+    deepAltExt,
+    deepAltBasename,
+    fileClassLocation,
+  })
 
   // if (callByFilenameExt === ".ts") {
   //   const fileDirname = dirname(fileClassLocation.pathname)
