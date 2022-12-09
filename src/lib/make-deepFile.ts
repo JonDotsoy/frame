@@ -65,13 +65,6 @@ export const makeDeepFile = async (
 
     const keyword = eachName(sourceBasename)
 
-    // console.log({
-    //     keyword,
-    //     importIdentifierNames,
-    //     sourceLocation,
-    //     sourceRelativeLocation,
-    // })
-
     return { keyword, sourceRelativeLocation }
   }
 
@@ -96,11 +89,11 @@ export const makeDeepFile = async (
     }
   }
 
-  // load tomy
-  const tomySourceLocation = require.resolve("../tomy")
-  const tomyResourceImport = appendResourceImport(tomySourceLocation)
-  const tomyRelativeSource = tomyResourceImport.relativeSource
-  const tomyScriptIdentified = tomyResourceImport.scriptIdentified
+  // load tom
+  const tomSourceLocation = require.resolve("../tom")
+  const tomResourceImport = appendResourceImport(tomSourceLocation)
+  const tomRelativeSource = tomResourceImport.relativeSource
+  const tomScriptIdentified = tomResourceImport.scriptIdentified
 
   for (const [sourceLocation, module] of cache) {
     appendResourceImport(sourceLocation)
@@ -153,7 +146,7 @@ export const makeDeepFile = async (
         "const",
         ctxIdentifier,
         new LittleScript.CallSentence(
-          tomyScriptIdentified,
+          tomScriptIdentified,
           new LittleScript.IdentifierSentence("createContext"),
           [deepsIdentifier]
         )

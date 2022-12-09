@@ -10,4 +10,4 @@ node_modules/
 dist/
 !.vscode
 !.husky
-.tomy
+.tom

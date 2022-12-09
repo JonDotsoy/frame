@@ -15,11 +15,11 @@ For example, the next App class is used to bootstrap the app.
 export class APP {}
 ```
 
-Now can create an instance with the TOMY module.
+Now can create an instance with the TOM module.
 
 ```ts
 // ./index.ts
-import { createContext } from "tomy"
+import { createContext } from "tomts"
 import { App } from "./app"
 
 const app = createContext().factory(App)

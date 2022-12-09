@@ -14,7 +14,7 @@
   "name": "tomts",
   "version": "0.1.0",
   "description": "TOM is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.",
-  "main": "dist/tomy.js",
+  "main": "dist/tom.js",
   "devDependencies": {
     "@types/node": "^18.11.11",
     "@vitest/ui": "^0.25.6",

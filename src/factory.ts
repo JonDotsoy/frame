@@ -36,19 +36,12 @@ export const factory = async <T>(C: new (...args: any) => T): Promise<T> => {
     fileClassLocation,
   })
 
-  // if (callByFilenameExt === ".ts") {
-  //   const fileDirname = dirname(fileClassLocation.pathname)
-  //   const fileBasename = basename(fileClassLocation.pathname, callByFilenameExt)
-
-  //   return require(`${fileDirname}/${fileBasename}.deeps`).ctx.get(C)
-  // }
-
   const keyword = relative(cwd(), fileClassLocation.pathname).replace(
     /\W/g,
     "_"
   )
   const fileOutLocationDirectory = new URL(
-    ".tomy/",
+    ".tom/",
     new URL(`${cwd()}/`, "file:///")
   )
   const fileOutLocation = new URL(`${keyword}.ts`, fileOutLocationDirectory)

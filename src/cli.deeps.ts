@@ -1,4 +1,4 @@
-import * as tomy from "./tomy"
+import * as tom from "./tom"
 import * as cli from "./cli"
 import * as factory from "./factory"
 import * as make_deepFile from "./lib/make-deepFile"
@@ -27,4 +27,4 @@ deeps.set(CompileCmd.CompileCmd, [])
 deeps.set(RunCmd.RunCmd, [])
 deeps.set(HelpCmd.HelpCmd, [])
 
-export const ctx = tomy.createContext(deeps)
+export const ctx = tom.createContext(deeps)
