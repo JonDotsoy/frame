@@ -1,12 +1,12 @@
 import { cwd } from "process"
 import { mkdir } from "fs/promises"
 import { spawn } from "child_process"
-import { scanDeeps } from "../../lib/scan-deeps"
-import { makeDeepFile } from "../../lib/make-deepFile"
-import { ArgsParsed } from "./ArgsParsed"
-import { CmdHandler } from "./CmdHandler"
+import { scanDeeps } from "../../../../lib/scan-deeps"
+import { makeDeepFile } from "../../../../lib/make-deepFile"
+import { ArgsParsed } from "../args/ArgsParsed"
+import { CmdHandler } from "../../types/CmdHandler"
 
-export class RunCmd implements CmdHandler {
+export class RunCmdHandler implements CmdHandler {
   async cmdHandler(argsParsed: ArgsParsed): Promise<void> {
     const fileClassLocationArgument = argsParsed.positional(1)
     if (!fileClassLocationArgument)

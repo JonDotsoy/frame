@@ -1,6 +1,6 @@
 import { parseArgs } from "util"
 
-export const parsed = parseArgs({
+export const globalArgsParsed = parseArgs({
   allowPositionals: true,
   options: {
     "init-bootstrap": {

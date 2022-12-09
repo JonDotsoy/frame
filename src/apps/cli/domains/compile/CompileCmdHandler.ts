@@ -1,10 +1,10 @@
 import { cwd } from "process"
-import { scanDeeps } from "../../lib/scan-deeps"
-import { makeDeepFile } from "../../lib/make-deepFile"
-import { ArgsParsed } from "./ArgsParsed"
-import { CmdHandler } from "./CmdHandler"
+import { scanDeeps } from "../../../../lib/scan-deeps"
+import { makeDeepFile } from "../../../../lib/make-deepFile"
+import { ArgsParsed } from "../args/ArgsParsed"
+import { CmdHandler } from "../../types/CmdHandler"
 
-export class CompileCmd implements CmdHandler {
+export class CompileCmdHandler implements CmdHandler {
   async cmdHandler(argsParsed: ArgsParsed) {
     const fileClassLocationArgument = argsParsed.positional(1)
     if (!fileClassLocationArgument)

@@ -7,9 +7,43 @@ import * as stacktrace from "stacktrace-js"
 import { makeDeepFile } from "./lib/make-deepFile"
 import { scanDeeps } from "./lib/scan-deeps"
 
-export const factory = async <T>(C: new (...args: any) => T): Promise<T> => {
+type FactoryOptions = {
+  traceLevel?: number
+}
+
+export const factoryAndRun = async <T>(
+  C: new (...args: any) => T,
+  options?: FactoryOptions
+): Promise<any> => {
+  const instance = await factory(C, { traceLevel: 2, ...options })
+
+  try {
+    const isNameFunction = <K extends string>(
+      item: any,
+      prop: K
+    ): item is Record<K, (...args: any) => any> =>
+      typeof item === "object" &&
+      item !== null &&
+      typeof item[prop] === "function"
+    if (isNameFunction(instance, "run")) return await instance.run()
+    if (isNameFunction(instance, "main")) return await instance.main()
+    if (isNameFunction(instance, "bootstrap")) return await instance.bootstrap()
+    throw new Error(
+      "Can't found some functions to run your app. You can choice `run()`, `main()` or `bootstrap()`"
+    )
+  } catch (ex) {
+    console.error(ex)
+    throw ex
+  }
+}
+
+export const factory = async <T>(
+  C: new (...args: any) => T,
+  options?: FactoryOptions
+): Promise<T> => {
+  const traceLevel = options?.traceLevel ?? 1
   const stacks = await stacktrace.get()
-  const callBy = stacks.at(1)
+  const callBy = stacks.at(traceLevel)
 
   if (!callBy) throw new TypeError("Undeterminable origin")
 

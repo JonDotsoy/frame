@@ -1,10 +1,10 @@
-import { parsed } from "./parsed"
+import { globalArgsParsed } from "../../lib/globalArgsParsed/globalArgsParsed"
 
 export class ArgsParsed {
-  parsed = parsed
+  parsed = globalArgsParsed
 
   positional(index: number): string | undefined {
-    return parsed.positionals[index]
+    return globalArgsParsed.positionals[index]
   }
 
   assetPositional(index: number, message: string): string {
