@@ -1,3 +1,5 @@
+import { debug } from "console"
+import { existsSync } from "fs"
 import { mkdir } from "fs/promises"
 import { basename, dirname, extname, relative } from "path"
 import { cwd } from "process"
@@ -7,21 +9,33 @@ import { scanDeeps } from "./lib/scan-deeps"
 
 export const factory = async <T>(C: new (...args: any) => T): Promise<T> => {
   const stacks = await stacktrace.get()
-  const callBy = stacks.at(2)
+  const callBy = stacks.at(1)
 
   if (!callBy) throw new TypeError("Undeterminable origin")
 
   const fileName = callBy.getFileName()
 
-  const callByFilenameExt = extname(fileName)
+  // const callByFilenameExt = extname(fileName)
   const fileClassLocation = new URL(fileName, new URL(`${cwd()}/`, "file:///"))
 
-  if (callByFilenameExt === ".js") {
-    const fileDirname = dirname(fileClassLocation.pathname)
-    const fileBasename = basename(fileClassLocation.pathname, callByFilenameExt)
+  const deepAltDirname = dirname(fileClassLocation.pathname)
+  const deepAltExt = extname(fileClassLocation.pathname)
+  const deepAltBasename = basename(fileClassLocation.pathname, deepAltExt)
+  const deepAltShort = `${deepAltDirname}/${deepAltBasename}.deeps`
+  const deepAlt = `${deepAltShort}${deepAltExt}`
 
-    return require(`${fileDirname}/${fileBasename}.deeps`).ctx.get(C)
+  if (existsSync(deepAlt)) {
+    return require(deepAltShort).ctx.get(C)
   }
+
+  debug({ deepAlt, deepAltDirname, deepAltExt, deepAltBasename, fileClassLocation })
+
+  // if (callByFilenameExt === ".ts") {
+  //   const fileDirname = dirname(fileClassLocation.pathname)
+  //   const fileBasename = basename(fileClassLocation.pathname, callByFilenameExt)
+
+  //   return require(`${fileDirname}/${fileBasename}.deeps`).ctx.get(C)
+  // }
 
   const keyword = relative(cwd(), fileClassLocation.pathname).replace(
     /\W/g,

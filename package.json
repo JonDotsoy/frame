@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "vitest run src/**.test.ts",
+    "test:watch": "vitest watch --ui src/**.test.ts",
     "prepare": "tsc && husky install"
   },
   "name": "tomy",

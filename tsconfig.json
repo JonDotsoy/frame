@@ -15,5 +15,6 @@
     },
     "rootDir": "src",
     "outDir": "dist"
-  }
+  },
+  "exclude": ["e2e","dist"]
 }
