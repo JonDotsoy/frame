@@ -1,4 +1,4 @@
-import { log } from "console";
+import { log } from "node:console"
 
 export class App {
   async run() {
