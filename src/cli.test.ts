@@ -1,3 +1,10 @@
-import { describe } from "node:test";
+import { debug, log, warn } from "node:console";
+import { inspect } from "node:util";
+import { describe, it, test } from "vitest";
 
-describe
+
+test('hola', () => {
+})
+
+test('ok', () => {
+})
