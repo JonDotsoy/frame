@@ -3,13 +3,17 @@ import { parseFile } from "@swc/core"
 import { dirname } from "path"
 import { Cache, cacheDefault } from "./dto/cache"
 import { ShortDefinition } from "./short-definition"
+import { RequireManager } from "./require-manager"
 
 export async function scanDeeps(
-  location: string,
+  fileLocation: string,
   cache: Cache = cacheDefault()
 ): Promise<Cache> {
-  if (cache.has(location)) return cache
-  const program = await parseFile(location, {
+  const fileLocationUrl = new URL(`${dirname(fileLocation)}/`, "file://")
+  const requireManager = new RequireManager(fileLocationUrl)
+
+  if (cache.has(fileLocation)) return cache
+  const program = await parseFile(fileLocation, {
     syntax: "typescript",
     target: "es2022",
   })
@@ -24,23 +28,20 @@ export async function scanDeeps(
     if (moduleItem.type === "ImportDeclaration") {
       const validRequireModule = /^[\.\/\\]/.test(moduleItem.source.value)
       if (validRequireModule) {
-        let module = require.resolve(
-          new URL(
-            moduleItem.source.value,
-            new URL(`${dirname(location)}/`, "file://")
-          ).pathname
+        let module = requireManager.resolve(
+          new URL(moduleItem.source.value, fileLocationUrl)
         )
         for (const specifier of moduleItem.specifiers) {
           if (specifier.type === "ImportSpecifier") {
             importIdentifiers.set(specifier.local.value, {
               exportName: specifier.imported?.value ?? specifier.local.value,
-              module,
+              module: module.pathname,
             })
           }
           if (specifier.type === "ImportDefaultSpecifier") {
             importIdentifiers.set(specifier.local.value, {
               exportName: "default",
-              module,
+              module: module.pathname,
             })
           }
         }
@@ -87,7 +88,7 @@ export async function scanDeeps(
     }
   }
 
-  cache.set(location, shortModule)
+  cache.set(fileLocation, shortModule)
 
   for (const [_, parameter] of importIdentifiers) {
     await scanDeeps(parameter.module, cache)

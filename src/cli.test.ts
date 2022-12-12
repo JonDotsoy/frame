@@ -5,6 +5,8 @@ import { createInterface } from "readline"
 import { inspect } from "util"
 import { beforeAll, describe, expect, it } from "vitest"
 
+// process.env.NODE_DEBUG = "tomts"
+
 const exec = async (
   cwd: string,
   cmd: string,
@@ -89,6 +91,6 @@ describe("run with npx", () => {
   it("should run the command npx tomts run main.ts and receive an 'Ok' in the out logs", async () => {
     const { outLines } = await exec(cwd, `npx ../.. run main.ts`)
 
-    expect(outLines).contain("ok")
+    expect(outLines).contain("Cat Service say hello")
   })
 })
