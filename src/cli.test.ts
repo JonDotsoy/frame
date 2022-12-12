@@ -88,7 +88,7 @@ describe("Tom CLI", () => {
 describe("run with npx", () => {
   const cwd = resolve(`${__dirname}/../e2e/run-app-with-npx`)
 
-  it("should run the command npx tomts run main.ts and receive an 'Ok' in the out logs", async () => {
+  it("should run the command npx tomts run main.ts and receive an 'Cat Service say hello' in the out logs", async () => {
     const { outLines } = await exec(cwd, `npx ../.. run main.ts`)
 
     expect(outLines).contain("Cat Service say hello")
