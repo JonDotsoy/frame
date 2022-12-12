@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.1](https://github.com/JonDotsoy/tomy/compare/v0.2.0...v0.2.1) (2022-12-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* force deploy
+
+### Build System
+
+* force deploy ([4a722f7](https://github.com/JonDotsoy/tomy/commit/4a722f7b97266a1e93661ca9620a27ccf0a0abf1))
+
+
+### Miscellaneous Chores
+
+* release 0.2.1 ([50b0e41](https://github.com/JonDotsoy/tomy/commit/50b0e4191bfe574756785cb387b39feccee80b1b))
+
 ## 0.2.0 (2022-12-12)
 
 
