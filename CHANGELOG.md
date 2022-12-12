@@ -1,0 +1,26 @@
+# Changelog
+
+## 0.2.0 (2022-12-12)
+
+
+### Features
+
+* Add husky to apply git hooks ([d8c049e](https://github.com/JonDotsoy/tomy/commit/d8c049e6d33c3e7e97e7943e6e7ef79298fd0ff5))
+* add test to run script ([050ab63](https://github.com/JonDotsoy/tomy/commit/050ab63b497679c914fc34afaac192df69a09e4e))
+* apply ts generator ([1ce1291](https://github.com/JonDotsoy/tomy/commit/1ce12914245a974e26a260d3cfdf7c5b5572c4b3))
+* configure app.ts ([6ad6776](https://github.com/JonDotsoy/tomy/commit/6ad6776f1df854fc7e6f9decbb0c3fcb072655bd))
+* configure build ([a76c4c9](https://github.com/JonDotsoy/tomy/commit/a76c4c9131f596585e6cb3fea138b0f8b87070cf))
+* configure build pack ([0781d46](https://github.com/JonDotsoy/tomy/commit/0781d46ed89946bea5bb6bfcd7ba525262e67303))
+* configure instance ([a36679a](https://github.com/JonDotsoy/tomy/commit/a36679a682750a2a11bd80060017e06aec1f6008))
+* configure prettier to format code ([cff620e](https://github.com/JonDotsoy/tomy/commit/cff620ef2844623b3d481ea36799e558adfde451))
+* configure repository on package.json ([f2cfbbb](https://github.com/JonDotsoy/tomy/commit/f2cfbbb1cf904cfb39e9bee20dd2f7dfcbc02641))
+* initialize commit ([3fb2568](https://github.com/JonDotsoy/tomy/commit/3fb256870f9fa197c3a2c120b513ce0ebeea0879))
+* prepare version 0.1.0 ([73086ff](https://github.com/JonDotsoy/tomy/commit/73086ff9444d197a4395b8a85bce93fe8f27a33f))
+* upgrade name to package ([acdafb5](https://github.com/JonDotsoy/tomy/commit/acdafb50321be285fbdac5a4201a58595393cded))
+* upgrade path resolver ([e8cd3d2](https://github.com/JonDotsoy/tomy/commit/e8cd3d2597e3446058f94017e19db25c5e624ff3))
+* upgrade tree files ([1a5fd7b](https://github.com/JonDotsoy/tomy/commit/1a5fd7bd6952ed877e04314df11606fb74b5cc89))
+
+
+### Miscellaneous Chores
+
+* release 0.2.0 ([5540277](https://github.com/JonDotsoy/tomy/commit/554027748c6cf226cf89f746429dbf1bc18c5aa9))
