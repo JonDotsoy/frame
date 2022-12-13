@@ -1,8 +1,5 @@
 name: deploy on NPM
-on:
-  push:
-    tags:
-      - "v*"
+on: release
 jobs:
   publish:
     runs-on: ubuntu-latest
