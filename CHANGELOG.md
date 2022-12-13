@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/JonDotsoy/tomy/compare/v0.2.1...v0.2.2) (2022-12-13)
+
+
+### Miscellaneous Chores
+
+* release 0.2.2 ([0561e91](https://github.com/JonDotsoy/tomy/commit/0561e91b118b6b1c81f1f4fa1b95a0b8ba472f4e))
+
 ## [0.2.1](https://github.com/JonDotsoy/tomy/compare/v0.2.0...v0.2.1) (2022-12-12)
 
 
