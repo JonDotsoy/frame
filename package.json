@@ -12,7 +12,7 @@
     "prepare": "tsc && husky install"
   },
   "name": "tomts",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "TOM is a framework for building scalable NodeJS applications based on the cleaner JS syntax, without decorators or sugar syntax.",
   "main": "dist/tom.js",
   "devDependencies": {
