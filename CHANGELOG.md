@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/JonDotsoy/tomts/compare/v0.2.4...v0.2.5) (2022-12-13)
+
+
+### Miscellaneous Chores
+
+* release 0.2.5 ([ccdcecb](https://github.com/JonDotsoy/tomts/commit/ccdcecba8f2700819a87f8ff4b86bdd9145134b5))
+
 ## [0.2.4](https://github.com/JonDotsoy/tomts/compare/v0.2.3...v0.2.4) (2022-12-13)
 
 
