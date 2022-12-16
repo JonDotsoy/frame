@@ -68,13 +68,13 @@ export const factory = async <T>(
     return require(deepAltShort).ctx.get(C)
   }
 
-  debug({
-    deepAlt,
-    deepAltDirname,
-    deepAltExt,
-    deepAltBasename,
-    fileClassLocation,
-  })
+  // debug({
+  //   deepAlt,
+  //   deepAltDirname,
+  //   deepAltExt,
+  //   deepAltBasename,
+  //   fileClassLocation,
+  // })
 
   const keyword = relative(cwd(), fileClassLocation.pathname).replace(
     /\W/g,
@@ -94,5 +94,6 @@ export const factory = async <T>(
   const fileDirname = dirname(fileOutLocation.pathname)
   const fileBasename = basename(fileOutLocation.pathname, fileExt)
 
-  return require(`${fileDirname}/${fileBasename}`).ctx.get(C)
+  return (await import(`${fileDirname}/${fileBasename}`)).ctx.get(C)
+  // return require(`${fileDirname}/${fileBasename}`).ctx.get(C)
 }

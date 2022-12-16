@@ -1,0 +1,55 @@
+// Vitest Snapshot v1
+
+exports[`Make deep file > should scan the sample cat.class.js with cat.class.d.ts file 1`] = `
+Map {
+  "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__2/cat.app.d.ts" => {
+    "classes": {
+      "CatApp": {
+        "parameters": [
+          {
+            "exportName": "CatController",
+            "module": URLTransformer {
+              "url": "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__2/cat.controller.d.ts",
+              "urlSource": "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__2/cat.controller",
+            },
+          },
+        ],
+      },
+    },
+  },
+  "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__2/cat.controller.d.ts" => {
+    "classes": {
+      "CatController": {
+        "parameters": [],
+      },
+    },
+  },
+}
+`;
+
+exports[`Make deep file > should scan the sample cat.class.ts file 1`] = `
+Map {
+  "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__1/cat.app.ts" => {
+    "classes": {
+      "CatApp": {
+        "parameters": [
+          {
+            "exportName": "CatController",
+            "module": URLTransformer {
+              "url": "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__1/cat.controller.ts",
+              "urlSource": "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__1/cat.controller",
+            },
+          },
+        ],
+      },
+    },
+  },
+  "file:///Users/jondotsoy/Repositories/jondotsoy/frame/src/tests/__samples__1/cat.controller.ts" => {
+    "classes": {
+      "CatController": {
+        "parameters": [],
+      },
+    },
+  },
+}
+`;

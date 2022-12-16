@@ -2,6 +2,11 @@ import { basename, dirname, relative } from "path"
 import { writeFile } from "fs/promises"
 import { Cache } from "./dto/cache"
 import { LittleScript } from "./little-script"
+import { RequireManager } from "./require-manager"
+import { URLTransformer } from "./url-transformer"
+
+const selfRequireManager = new RequireManager(new URL(__filename, 'file://'))
+const dirnameUrl = new URL(`${__dirname}/`, 'file://')
 
 export interface MakeDeepFileOptions {
   makeBootstrap?: boolean
@@ -32,21 +37,18 @@ export const makeDeepFile = async (
     return importIdentifier
   }
 
-  const toRelativeSource = (sourceLocation: string) => {
-    const _sourceRelativeLocation = relative(
-      dirname(outLocation),
-      sourceLocation
-    )
+  const toRelativeSource = (sourceLocation: URLTransformer) => {
+    const _sourceRelativeLocation = sourceLocation.toRelativeFrom(dirname(outLocation))
     const __sourceRelativeLocation =
       _sourceRelativeLocation.startsWith("/") ||
-      _sourceRelativeLocation.startsWith(".")
+        _sourceRelativeLocation.startsWith(".")
         ? _sourceRelativeLocation
         : `./${_sourceRelativeLocation}`
     const sourceRelativeLocation = __sourceRelativeLocation.endsWith(".ts")
       ? __sourceRelativeLocation.substring(
-          0,
-          __sourceRelativeLocation.length - 3
-        )
+        0,
+        __sourceRelativeLocation.length - 3
+      )
       : __sourceRelativeLocation
 
     const sourceBasename = basename(sourceRelativeLocation).replace(/\W/g, "_")
@@ -68,13 +70,13 @@ export const makeDeepFile = async (
     return { keyword, sourceRelativeLocation }
   }
 
-  const appendResourceImport = (sourceLocation: string) => {
+  const appendResourceImport = (sourceLocation: URLTransformer) => {
     const relativeSource = toRelativeSource(sourceLocation)
     const scriptIdentified = new LittleScript.IdentifierSentence(
       relativeSource.keyword
     )
     importIdentifierNames.add(relativeSource.keyword)
-    importIdentifierSourceLocations.set(sourceLocation, scriptIdentified)
+    importIdentifierSourceLocations.set(sourceLocation.toString(), scriptIdentified)
 
     program.append(
       new LittleScript.ImportSentence(
@@ -90,13 +92,13 @@ export const makeDeepFile = async (
   }
 
   // load tom
-  const tomSourceLocation = require.resolve("../tom")
+  const tomSourceLocation = selfRequireManager.resolveExpression(new URL('../tom', dirnameUrl))
   const tomResourceImport = appendResourceImport(tomSourceLocation)
   const tomRelativeSource = tomResourceImport.relativeSource
   const tomScriptIdentified = tomResourceImport.scriptIdentified
 
   for (const [sourceLocation, module] of cache) {
-    appendResourceImport(sourceLocation)
+    appendResourceImport(URLTransformer.fromPlainURL(sourceLocation))
   }
 
   program.append(new LittleScript.LiteralSentence(""))

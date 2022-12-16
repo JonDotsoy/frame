@@ -6,4 +6,4 @@ TomTS is to build more legible Javascript applications.
 
 ## Philosophy
 
-TomTS is oriented to optimize general processes not helpful to productivity. Since the injection of dependencies or the creating of service controller.
+TomTS is oriented to optimize general processes not helpful to productivity. Since the injection of dependencies or the creation of HTTP services controller.

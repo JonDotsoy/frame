@@ -1,6 +1,8 @@
+import { URLTransformer } from "./url-transformer"
+
 export namespace ShortDefinition {
   export type Parameter = {
-    module: string
+    module: URLTransformer
     exportName: string
   }
 

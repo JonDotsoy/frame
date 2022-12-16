@@ -1,19 +1,21 @@
 import * as swc from "@swc/core"
-import { parseFile } from "@swc/core"
+import { parseFile, TsTypeAnnotation } from "@swc/core"
 import { dirname } from "path"
 import { Cache, cacheDefault } from "./dto/cache"
 import { ShortDefinition } from "./short-definition"
 import { RequireManager } from "./require-manager"
+import { URLTransformer } from "./url-transformer"
 
 export async function scanDeeps(
-  fileLocation: string,
+  fileLocationUrl: URLTransformer,
   cache: Cache = cacheDefault()
 ): Promise<Cache> {
-  const fileLocationUrl = new URL(`${dirname(fileLocation)}/`, "file://")
-  const requireManager = new RequireManager(fileLocationUrl)
+  const requireManager = new RequireManager(fileLocationUrl.toDirname().toURL())
+  const fileLocation = requireManager.resolveExpression(fileLocationUrl.toPath())
+  if (!fileLocation) throw new Error(`Cannot found source ${fileLocationUrl}`)
+  if (cache.has(fileLocation.toString())) return cache
 
-  if (cache.has(fileLocation)) return cache
-  const program = await parseFile(fileLocation, {
+  const program = await parseFile(fileLocation.toPath(), {
     syntax: "typescript",
     target: "es2022",
   })
@@ -26,22 +28,19 @@ export async function scanDeeps(
 
   for (const moduleItem of program.body) {
     if (moduleItem.type === "ImportDeclaration") {
-      const validRequireModule = /^[\.\/\\]/.test(moduleItem.source.value)
+      const validRequireModule = requireManager.resolveExpression(moduleItem.source.value)
       if (validRequireModule) {
-        let module = requireManager.resolve(
-          new URL(moduleItem.source.value, fileLocationUrl)
-        )
         for (const specifier of moduleItem.specifiers) {
           if (specifier.type === "ImportSpecifier") {
             importIdentifiers.set(specifier.local.value, {
               exportName: specifier.imported?.value ?? specifier.local.value,
-              module: module.pathname,
+              module: validRequireModule,
             })
           }
           if (specifier.type === "ImportDefaultSpecifier") {
             importIdentifiers.set(specifier.local.value, {
               exportName: "default",
-              module: module.pathname,
+              module: validRequireModule,
             })
           }
         }
@@ -80,6 +79,27 @@ export async function scanDeeps(
                 }
               }
             }
+            else if (param.type === "Parameter") {
+              const pat = param.pat
+              if (pat.type === "Identifier") {
+                console.log(pat)
+                const typeAnnotation: TsTypeAnnotation | undefined = Object.getOwnPropertyDescriptor(pat, "typeAnnotation")?.value
+                if (typeAnnotation) {
+                  const typeReference = typeAnnotation.typeAnnotation
+                  if (typeReference.type === "TsTypeReference") {
+                    const typeName = typeReference.typeName
+                    if (typeName.type==="Identifier") {
+                      const parameter = importIdentifiers.get(typeName.value)
+                      if (parameter) {
+                        shortClass.parameters.push(parameter)
+                      }
+                    }
+                  }
+                }
+              }
+            } else {
+              throw new Error("Not parameter identifier")
+            }
           }
         }
 
@@ -88,7 +108,7 @@ export async function scanDeeps(
     }
   }
 
-  cache.set(fileLocation, shortModule)
+  cache.set(fileLocation.toString(), shortModule)
 
   for (const [_, parameter] of importIdentifiers) {
     await scanDeeps(parameter.module, cache)
